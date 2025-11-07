@@ -21,7 +21,23 @@
     </main>
 
 
-
+<!-- Edit Modal -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+      <h2>Edit Blog Post</h2>
+      <form id="editForm" novalidate>
+        <input id="editBlogTitle" type="text" placeholder="Blog Title" required>
+        <span class="error-message" id="editBlogTitleError"></span>
+        
+        <textarea id="editBlogContent" rows="10" cols="50" placeholder="Enter Blog Content.." required></textarea>
+        <span class="error-message" id="editBlogContentError"></span>
+        
+        <button type="submit" id="updateBlogBtn">Update Blog</button>
+        <button type="button" id="cancelEditBtn">Cancel</button>
+      </form>
+    </div>
+  </div>
+  
     <script src="script.js"></script>
 </body>
 </html>
