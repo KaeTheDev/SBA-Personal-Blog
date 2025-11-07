@@ -1,3 +1,5 @@
+// ======= FORM & ERROR ELEMENTS =======
+
 const blogTitle = document.getElementById("blogTitle");
 const blogContent = document.getElementById("blogContent");
 const addBlogBtn = document.getElementById("addBlogBtn");
@@ -7,6 +9,18 @@ const blogContentError = document.getElementById("blogContentError");
 const blogForm = document.getElementById("blogForm");
 
 let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+
+// ======= EDIT MODAL ELEMENTS =======
+const editModal = document.getElementById("editModal");
+const editForm = document.getElementById("editForm");
+const editBlogTitle = document.getElementById("editBlogTitle");
+const editBlogContent = document.getElementById("editBlogContent");
+const editBlogTitleError = document.getElementById("editBlogTitleError");
+const editBlogContentError = document.getElementById("editBlogContentError");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+
+// Track which blog is being edited
+let editIndex = null;
 
 function displaySavedBlogs(blogArray = blogs) {
   blogList.innerHTML = ""; // Clear list so no duplicates are added
