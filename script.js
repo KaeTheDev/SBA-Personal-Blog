@@ -45,63 +45,59 @@ function displaySavedBlogs(blogArray = blogs) {
     editBtn.innerText = "Edit Blog";
     editBtn.addEventListener("click", () => openEditModal(index));
 
+    // Create Delete Button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "Delete Blog";
+
     blogItem.innerHTML = `
         <span class="col">${blog.blogTitle}</span>
         <span class="col">${blog.blogContent}</span>
         `;
 
     blogItem.appendChild(editBtn);
+    blogItem.appendChild(deleteBtn);
     blogList.appendChild(blogItem);
   });
 }
 
-// Prevent Submit Until Validation Checks Pass
 blogForm.addEventListener("submit", function (event) {
-  if (!blogForm.checkValidity()) {
-    event.preventDefault();
-
-    if (blogTitle.validity.valueMissing) {
-      blogTitle.setCustomValidity(
-        "Blog Title is required. Please enter a Blog Title."
-      );
+    event.preventDefault(); // Prevent default form submission
+  
+    let valid = true;
+  
+    // Validate Title
+    if (!blogTitle.value.trim()) {
+      blogTitleError.textContent = "Blog Title is required.";
+      valid = false;
     } else {
-      blogTitle.setCustomValidity(""); // Clear
+      blogTitleError.textContent = "";
     }
-
-    blogTitleError.textContent = blogTitle.validationMessage;
-
-    if (blogContent.validity.valueMissing) {
-      blogContent.setCustomValidity(
-        "Blog Content is required. Please enter some content."
-      );
+  
+    // Validate Content
+    if (!blogContent.value.trim()) {
+      blogContentError.textContent = "Blog Content is required.";
+      valid = false;
     } else {
-      blogContent.setCustomValidity(""); // Clear
+      blogContentError.textContent = "";
     }
-
-    blogContentError.textContent = blogContent.validationMessage;
-
-    // --- If form is invalid, stop ---
-    if (!blogForm.checkValidity()) {
-      return;
-    }
-
+  
+    if (!valid) return; // Stop if invalid
+  
     // --- If valid, add blog ---
     const blog = {
       blogTitle: blogTitle.value.trim(),
       blogContent: blogContent.value.trim(),
     };
-
+  
     blogs.push(blog);
     localStorage.setItem("blogs", JSON.stringify(blogs));
-
+  
     displaySavedBlogs();
-
     blogForm.reset();
     blogTitleError.textContent = "";
     blogContentError.textContent = "";
-  }
-});
-
+  });
+  
 
 // ======= OPEN EDIT MODAL FUNCTION =======
 function openEditModal(index) {
@@ -167,6 +163,13 @@ function closeEditModal() {
   editBlogTitleError.textContent = "";
   editBlogContentError.textContent = "";
 }
+
+  // ======= HANDLE DELETE BLOG =======
+  function deleteBlog(index){
+    const blogs = blogs[index]
+    localStorage.removeItem(blogs);
+
+  }
 
 // Initial Render
 displaySavedBlogs();
