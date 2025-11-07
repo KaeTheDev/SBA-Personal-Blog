@@ -2,6 +2,8 @@ const blogTitle = document.getElementById("blogTitle");
 const blogContent = document.getElementById("blogContent");
 const addBlogBtn = document.getElementById("addBlogBtn");
 const blogList = document.getElementById("blogList"); 
+const blogTitleError = document.getElementById("blogTitleError");
+const blogContentError = document.getElementById("blogContentError");
 
 let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
 
