@@ -8,14 +8,16 @@
 </head>
 <body>
     <main id="main">
+        <form id="blogForm" novalidate>
         <input id="blogTitle" type="text" placeholder="Blog Title" required>
         <span class="error-message" id="blogTitleError"></span>
         <textarea name="blog-content" id="blogContent" rows="10" cols="50" placeholder="Enter Blog Content.." required></textarea>
         <span class="error-message" id="blogContentError"></span>
-        <button id="addBlogBtn">Submit</button>
+        <button type="submit" id="addBlogBtn">Submit</button>
 
             <h1>New Blog Posts</h1>
             <ul id="blogList"></ul>
+        </form>
     </main>
 
 
