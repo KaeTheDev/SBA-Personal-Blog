@@ -14,7 +14,7 @@ function addBlog(){
     let blog = {
         blogTitle: blogTitle.value,
         blogContent: blogContent.value,
-        timeStamp: Date.now()
+        timeStamp: new Date()
     };
 
     blogs.push(blog);
