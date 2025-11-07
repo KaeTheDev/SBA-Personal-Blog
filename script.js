@@ -14,7 +14,6 @@ function addBlog(){
     let blog = {
         blogTitle: blogTitle.value,
         blogContent: blogContent.value,
-        timeStamp: new Date()
     };
 
     blogs.push(blog);
@@ -36,6 +35,45 @@ function addBlog(){
 
     blogContentError.textContent = blogContent.validationMessage;
 
+    displaySavedBlogs(blogs); // Show all tasks again, including new ones
+
     blogTitle.value = '';
     blogContent.value = '';
 }
+
+function displaySavedBlogs(blogArray = blogs) {
+    blogList.innerHTML = ''; // Clear list so no duplicates are added
+
+    // Create Header
+    const header = document.createElement("li");
+
+    // Create Edit Button
+    const editBtn = document.createElement("button");
+    editBtn.innerText = "Edit Blog";
+
+    header.className = "table-header";
+    header.innerHTML = `
+    <span class="col">Title</span>
+    <span class="col">Content</span>
+    `;
+
+    blogList.appendChild(header);
+
+
+    // Loop through tasks & add theme
+    blogArray.forEach((blog) =>{
+        let blogItem = document.createElement("li");
+
+        blogItem.innerHTML = `
+        <span class="col">${blog.blogTitle}</span>
+        <span class="col">${blog.blogContent}</span>
+        `;
+
+        blogList.appendChild(blogItem);
+        blogItem.appendChild(editBtn);
+    });
+
+}
+
+// Initial Render
+displaySavedBlogs();
