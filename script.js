@@ -37,12 +37,13 @@ function displaySavedBlogs(blogArray = blogs) {
   blogList.appendChild(header);
 
   // Loop through tasks & add theme
-  blogArray.forEach((blog) => {
+  blogArray.forEach((blog, index) => {
     let blogItem = document.createElement("li");
 
     // Create Edit Button
     const editBtn = document.createElement("button");
     editBtn.innerText = "Edit Blog";
+    editBtn.addEventListener("click", () => openEditModal(index));
 
     blogItem.innerHTML = `
         <span class="col">${blog.blogTitle}</span>
@@ -110,6 +111,6 @@ function openEditModal(index) {
     editIndex = index;
     editModal.style.display = "flex"; // show the modal
   }
-  
+
 // Initial Render
 displaySavedBlogs();
