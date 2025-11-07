@@ -28,6 +28,14 @@ function addBlog(){
 
     blogTitleError.textContent = blogTitle.validationMessage;
 
+    if(blogContent.validity.valueMissing){
+        blogContent.setCustomValidity("Blog Content is required. Please enter some content.");
+    } else {
+        blogContent.setCustomValidity(''); // Clear
+    }
+
+    blogContentError.textContent = blogContent.validationMessage;
+
     blogTitle.value = '';
     blogContent.value = '';
 }
