@@ -101,5 +101,15 @@ blogForm.addEventListener("submit", function (event) {
   }
 });
 
+
+// ======= OPEN EDIT MODAL FUNCTION =======
+function openEditModal(index) {
+    const blog = blogs[index];
+    editBlogTitle.value = blog.blogTitle;
+    editBlogContent.value = blog.blogContent;
+    editIndex = index;
+    editModal.style.display = "flex"; // show the modal
+  }
+  
 // Initial Render
 displaySavedBlogs();
