@@ -112,5 +112,61 @@ function openEditModal(index) {
     editModal.style.display = "flex"; // show the modal
   }
 
+  // ======= HANDLE EDIT FORM SUBMISSION =======
+  editForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent default form submission
+  
+    let valid = true;
+  
+    // Validate Title
+    if (!editBlogTitle.value.trim()) {
+      editBlogTitleError.textContent = "Blog Title is required.";
+      valid = false;
+    } else {
+      editBlogTitleError.textContent = "";
+    }
+  
+    // Validate Content
+    if (!editBlogContent.value.trim()) {
+      editBlogContentError.textContent = "Blog Content is required.";
+      valid = false;
+    } else {
+      editBlogContentError.textContent = "";
+    }
+  
+    if (!valid) return; // Stop if invalid
+  
+    // Update the blog in the array
+    blogs[editIndex] = {
+      blogTitle: editBlogTitle.value.trim(),
+      blogContent: editBlogContent.value.trim(),
+    };
+  
+    // Save to localStorage
+    localStorage.setItem("blogs", JSON.stringify(blogs));
+  
+    // Refresh the list
+    displaySavedBlogs();
+  
+    // Close modal and reset
+    closeEditModal();
+  });
+
+  // Cancel button closes modal without saving
+cancelEditBtn.addEventListener("click", closeEditModal);
+
+// Clicking outside modal closes it
+editModal.addEventListener("click", (e) => {
+  if (e.target === editModal) closeEditModal();
+});
+
+// Function to close modal and clear errors
+function closeEditModal() {
+  editModal.style.display = "none";
+  editIndex = null;
+  editBlogTitleError.textContent = "";
+  editBlogContentError.textContent = "";
+}
+
 // Initial Render
 displaySavedBlogs();
