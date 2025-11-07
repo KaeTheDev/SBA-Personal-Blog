@@ -47,10 +47,6 @@ function displaySavedBlogs(blogArray = blogs) {
     // Create Header
     const header = document.createElement("li");
 
-    // Create Edit Button
-    const editBtn = document.createElement("button");
-    editBtn.innerText = "Edit Blog";
-
     header.className = "table-header";
     header.innerHTML = `
     <span class="col">Title</span>
@@ -59,18 +55,21 @@ function displaySavedBlogs(blogArray = blogs) {
 
     blogList.appendChild(header);
 
-
     // Loop through tasks & add theme
     blogArray.forEach((blog) =>{
         let blogItem = document.createElement("li");
+
+            // Create Edit Button
+    const editBtn = document.createElement("button");
+    editBtn.innerText = "Edit Blog";
 
         blogItem.innerHTML = `
         <span class="col">${blog.blogTitle}</span>
         <span class="col">${blog.blogContent}</span>
         `;
 
-        blogList.appendChild(blogItem);
         blogItem.appendChild(editBtn);
+        blogList.appendChild(blogItem);
     });
 
 }
