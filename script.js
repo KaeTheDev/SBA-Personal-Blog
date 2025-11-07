@@ -20,6 +20,13 @@ function addBlog(){
     blogs.push(blog);
     localStorage.setItem("blogs", JSON.stringify(blogs));
 
+    if(blogTitle.validity.valueMissing){
+        blogTitle.setCustomValidity("Blog Title is required. Please enter a Blog Title.");
+    } else {
+        blogTitle.setCustomValidity(''); // Clear 
+    }
+
+    blogTitleError.textContent = blogTitle.validationMessage;
 
     blogTitle.value = '';
     blogContent.value = '';
