@@ -19,6 +19,8 @@ const editBlogTitleError = document.getElementById("editBlogTitleError");
 const editBlogContentError = document.getElementById("editBlogContentError");
 const cancelEditBtn = document.getElementById("cancelEditBtn");
 
+let blogIdCounter = Number(localStorage.getItem("blogIdCounter")) || 1;
+
 // Track which blog is being edited
 let editIndex = null;
 
@@ -48,6 +50,7 @@ function displaySavedBlogs(blogArray = blogs) {
     // Create Delete Button
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete Blog";
+    deleteBtn.addEventListener("click", () => deleteBlog(index));
 
     blogItem.innerHTML = `
         <span class="col">${blog.blogTitle}</span>
@@ -61,94 +64,98 @@ function displaySavedBlogs(blogArray = blogs) {
 }
 
 blogForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent default form submission
-  
-    let valid = true;
-  
-    // Validate Title
-    if (!blogTitle.value.trim()) {
-      blogTitleError.textContent = "Blog Title is required.";
-      valid = false;
-    } else {
-      blogTitleError.textContent = "";
-    }
-  
-    // Validate Content
-    if (!blogContent.value.trim()) {
-      blogContentError.textContent = "Blog Content is required.";
-      valid = false;
-    } else {
-      blogContentError.textContent = "";
-    }
-  
-    if (!valid) return; // Stop if invalid
-  
-    // --- If valid, add blog ---
-    const blog = {
-      blogTitle: blogTitle.value.trim(),
-      blogContent: blogContent.value.trim(),
-    };
-  
-    blogs.push(blog);
-    localStorage.setItem("blogs", JSON.stringify(blogs));
-  
-    displaySavedBlogs();
-    blogForm.reset();
+  event.preventDefault(); // Prevent default form submission
+
+  let valid = true;
+
+  // Validate Title
+  if (!blogTitle.value.trim()) {
+    blogTitleError.textContent = "Blog Title is required.";
+    valid = false;
+  } else {
     blogTitleError.textContent = "";
+  }
+
+  // Validate Content
+  if (!blogContent.value.trim()) {
+    blogContentError.textContent = "Blog Content is required.";
+    valid = false;
+  } else {
     blogContentError.textContent = "";
-  });
-  
+  }
+
+  if (!valid) return; // Stop if invalid
+
+  // --- If valid, add blog ---
+  const blog = {
+    blogTitle: blogTitle.value.trim(),
+    blogContent: blogContent.value.trim(),
+    timeStamp: new Date(),
+    id: blogIdCounter,
+  };
+  // Increment counter and save to localStorage
+  blogIdCounter++;
+  localStorage.setItem("blogIdCounter", blogIdCounter);
+
+  blogs.push(blog);
+  localStorage.setItem("blogs", JSON.stringify(blogs));
+
+  displaySavedBlogs();
+  blogForm.reset();
+  blogTitleError.textContent = "";
+  blogContentError.textContent = "";
+});
 
 // ======= OPEN EDIT MODAL FUNCTION =======
 function openEditModal(index) {
-    const blog = blogs[index];
-    editBlogTitle.value = blog.blogTitle;
-    editBlogContent.value = blog.blogContent;
-    editIndex = index;
-    editModal.style.display = "flex"; // show the modal
+  const blog = blogs[index];
+  editBlogTitle.value = blog.blogTitle;
+  editBlogContent.value = blog.blogContent;
+  editIndex = index;
+  editModal.style.display = "flex"; // show the modal
+}
+
+// ======= HANDLE EDIT FORM SUBMISSION =======
+editForm.addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent default form submission
+
+  let valid = true;
+
+  // Validate Title
+  if (!editBlogTitle.value.trim()) {
+    editBlogTitleError.textContent = "Blog Title is required.";
+    valid = false;
+  } else {
+    editBlogTitleError.textContent = "";
   }
 
-  // ======= HANDLE EDIT FORM SUBMISSION =======
-  editForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent default form submission
-  
-    let valid = true;
-  
-    // Validate Title
-    if (!editBlogTitle.value.trim()) {
-      editBlogTitleError.textContent = "Blog Title is required.";
-      valid = false;
-    } else {
-      editBlogTitleError.textContent = "";
-    }
-  
-    // Validate Content
-    if (!editBlogContent.value.trim()) {
-      editBlogContentError.textContent = "Blog Content is required.";
-      valid = false;
-    } else {
-      editBlogContentError.textContent = "";
-    }
-  
-    if (!valid) return; // Stop if invalid
-  
-    // Update the blog in the array
-    blogs[editIndex] = {
-      blogTitle: editBlogTitle.value.trim(),
-      blogContent: editBlogContent.value.trim(),
-    };
-  
-    // Save to localStorage
-    localStorage.setItem("blogs", JSON.stringify(blogs));
-  
-    // Refresh the list
-    displaySavedBlogs();
-  
-    // Close modal and reset
-    closeEditModal();
-  });
+  // Validate Content
+  if (!editBlogContent.value.trim()) {
+    editBlogContentError.textContent = "Blog Content is required.";
+    valid = false;
+  } else {
+    editBlogContentError.textContent = "";
+  }
 
-  // Cancel button closes modal without saving
+  if (!valid) return; // Stop if invalid
+
+  // Update the blog in the array
+  blogs[editIndex] = {
+    blogTitle: editBlogTitle.value.trim(),
+    blogContent: editBlogContent.value.trim(),
+  };
+
+  // Save to localStorage
+  localStorage.setItem("blogs", JSON.stringify(blogs));
+
+  // Refresh the list
+  displaySavedBlogs();
+
+  // Close modal and reset
+  closeEditModal();
+});
+
+// Cancel button closes modal without saving
 cancelEditBtn.addEventListener("click", closeEditModal);
 
 // Clicking outside modal closes it
@@ -164,12 +171,12 @@ function closeEditModal() {
   editBlogContentError.textContent = "";
 }
 
-  // ======= HANDLE DELETE BLOG =======
-  function deleteBlog(index){
-    const blogs = blogs[index]
-    localStorage.removeItem(blogs);
-
-  }
+// ======= HANDLE DELETE BLOG =======
+function deleteBlog(index) {
+  blogs.splice(index, 1);
+  localStorage.setItem("blogs", JSON.stringify(blogs));
+  displaySavedBlogs();
+}
 
 // Initial Render
 displaySavedBlogs();
